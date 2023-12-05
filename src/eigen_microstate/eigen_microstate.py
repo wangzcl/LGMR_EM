@@ -80,7 +80,7 @@ class eigen_microstate:
         Weights (\sigma^2')of the microstates.
 
     ``evolution_``: ndarray of shape (n_microstate, n_agent)
-        Evolution (:math: 'V') of the microstates,
+        Evolution ('V') of the microstates,
         stacked along the 0th axis,
         sorted by their weights or eigenvalues.
 
