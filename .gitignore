@@ -1,1 +1,8 @@
 .DS_Store
+build/
+scripts/debug*.py
+**/__pycache__/
+**/*.egg-info/
+
+data/**/*.*
+!data/**/*.md
