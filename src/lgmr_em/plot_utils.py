@@ -21,6 +21,7 @@ def plot_evolution_series(
     xlabel: str = None,
     ylabel: str = None,
     title: str = None,
+    *args,
     **kwargs,
 ):
     # TODO: edit docstring
@@ -52,7 +53,7 @@ def plot_evolution_series(
         ax.set_ylabel(ylabel)
     if title is not None:
         ax.set_title(title)
-    ax.plot(x, y, **kwargs)
+    ax.plot(x, y, *args, **kwargs)
     return ax
 
 
