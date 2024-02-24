@@ -1,6 +1,7 @@
 """
 Ultilities for reading and processing LGMR data
 """
+
 from typing import Literal
 import numpy as np
 from numpy.typing import ArrayLike
@@ -17,7 +18,6 @@ LGMR_PHASES = ("glacial", "deglacial", "interglacial")
 GLACIAL_DEGLACIAL_BOUNDARY = 16900
 DEGLACIAL_INTERGLACIAL_BOUNDARY = 9500
 HOLOCENE_BOUNDARY = 11700
-
 
 
 @dataclass
@@ -136,35 +136,39 @@ def lgmr_dataslice(data: GeospatialRaster, timeslice: str | slice) -> Geospatial
 
 
 def load_trace_data(
-    filename: str, convert_lon=True, resample=True, 
+    filename: str,
+    convert_lon=True,
+    resample=True,
 ) -> GeospatialRaster:
     data = xr.open_dataarray(filename).squeeze()
     # reindex
     data.coords["time"] = 1000 * data.time
     # ignore data after 1950 (negative year BP)
-    data = data[data.time<=0]
+    data = data[data.time <= 0]
     if resample:
         bins = np.arange(-22000, 100, 200)
         labels = bins[:-1] + 100.0
         data = (
-            data.groupby_bins("time", bins, labels=labels).mean().rename({"time_bins": "time"})
+            data.groupby_bins("time", bins, labels=labels)
+            .mean()
+            .rename({"time_bins": "time"})
         )
-    
+
     time = -data.time.values
 
     if "TLAT" in data.coords:
         lat = data.TLAT.values
     elif "lat" in data.coords:
         lat = data.lat.values
-    
+
     if "TLONG" in data.coords:
         lon = data.TLONG.values
     elif "lon" in data.coords:
         lon = data.lon.values
-    
+
     if convert_lon:
         lon = convert_longitude(lon)
-    
+
     values = data.values - 273.15
 
     return GeospatialRaster(values, lat, lon, time)
