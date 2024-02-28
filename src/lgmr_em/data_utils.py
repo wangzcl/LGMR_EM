@@ -102,6 +102,27 @@ def load_lgmr_data(
     data = GeospatialRaster(values, lat, lon, age, tarea)
     return data
 
+def xarray_to_geospatial_raster(data: xr.DataArray) -> GeospatialRaster:
+    """
+    Convert an xarray.DataArray to a GeospatialRaster object.
+
+    Parameters
+    ----------
+    data : xr.DataArray
+        The data to convert.
+
+    Returns
+    -------
+    geospatial_raster : GeospatialRaster
+        The converted data.
+    """
+    values = data.values
+    lat = data.coords["lat"].values
+    lon = data.coords["lon"].values
+    time = data.coords["age"].values
+
+    return GeospatialRaster(values, lat, lon, time)
+
 
 def lgmr_dataslice(data: GeospatialRaster, timeslice: str | slice) -> GeospatialRaster:
     """
