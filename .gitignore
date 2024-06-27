@@ -8,3 +8,6 @@ scripts/debug*.py
 data/**/*.*
 !data/**/*.md
 images/ensembles/*
+archive/
+
+*.pdf

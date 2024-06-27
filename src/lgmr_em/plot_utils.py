@@ -293,6 +293,27 @@ def plot_proxy_series_and_location(
     upper_boundary=data_utils.DEGLACIAL_INTERGLACIAL_BOUNDARY,
     lower_boundary=0,
 ):
+    """
+    Plot proxy series and location on a figure.
+
+    Parameters
+    ----------
+    proxydb : h5netcdf.File
+        The proxy database.
+    site_name : str
+        The name of the site.
+    proxy_names : Iterable
+        A list of proxy names to plot.
+    upper_boundary : float or int, optional
+        The upper boundary for the age range. Defaults to data_utils.DEGLACIAL_INTERGLACIAL_BOUNDARY.
+    lower_boundary : float or int, optional
+        The lower boundary for the age range. Defaults to 0.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+        The generated figure.
+    """
 
     n = len(proxy_names)
     site = proxydb[site_name]

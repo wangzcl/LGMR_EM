@@ -303,7 +303,7 @@ def is_high_quality_proxy(
     age: ArrayLike,
     n_values: int,
     boundary_distance: int,
-    timeslice="interglaical",
+    timeslice="interglacial",
 ) -> bool:
     """
     Whether a proxy series is good enough to represent time variability in a given period.
