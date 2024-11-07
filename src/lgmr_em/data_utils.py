@@ -5,7 +5,6 @@ Ultilities for reading and processing LGMR data
 from typing import Literal
 import numpy as np
 from numpy.typing import ArrayLike
-import pandas as pd
 import xarray as xr
 import h5netcdf
 from dataclasses import dataclass
@@ -161,6 +160,9 @@ def load_trace_data(
     convert_lon=True,
     resample=True,
 ) -> GeospatialRaster:
+    """
+    Load trace data from a NetCDF file.
+    """
     data = xr.open_dataarray(filename).squeeze()
     # reindex
     data.coords["time"] = 1000 * data.time
@@ -349,10 +351,10 @@ ProxyTrends = namedtuple("ProxyTrends", ["site", "lat", "lon", "trends"])
 
 
 def proxy_trends(
-    filepath: str, timeslice: str = "interglacial", p_thres: float = None
+    filepath: str, timeslice: str = "interglacial"
 ) -> list[ProxyTrends]:
     """
-    Load proxy database from a NetCDF file, and calculate increasing or decreasing
+    Load proxy database from a NetCDF file, and calculate Kendall tau
     temperature trends of proxy series.
 
     Parameters:
@@ -367,11 +369,10 @@ def proxy_trends(
     --------
     all_trends : list[ProxyTrends]
         A list of ProxyTrends objects, each of which contains the site name,
-        latitude, longitude and trends (sorted) of a proxy record.
-        If a site "a" is locate at (30°N, 120°E), and has 2 series representing
-        increasing temperature, 1 series representing decreasing temperature,
+        latitude, longitude and kendall tau trends (reversely sorted) of a proxy record.
+        If a site "a" is locate at (30°N, 120°E), and has 3 series,
         the corresponding ProxyTrends object is:
-        ProxyTrends(site="a", lat=30, lon=120, trends=(1, 1, -1))
+        ProxyTrends(site="a", lat=30, lon=120, trends=(tau1, tau2, tau3))
 
     """
     if timeslice == "interglacial":
@@ -400,7 +401,8 @@ def proxy_trends(
                 timeslice,
             ):
                 continue
-            trend = ascend_or_descend(age, data, p_thres)
+            #trend = ascend_or_descend(age, data, p_thres)
+            trend = -kendalltau(age, data).statistic
             trend *= proxy_temp_correlation(var_name)
             trends.append(trend)
 

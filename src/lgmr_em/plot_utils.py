@@ -1,13 +1,14 @@
 """
 Utilities for plotting.
 """
-
 import numpy as np
 from numpy.typing import ArrayLike
 from h5netcdf import File
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import seaborn as sns
 from eigen_microstate import EMG
 from . import data_utils
 
@@ -24,7 +25,6 @@ def plot_evolution_series(
     *args,
     **kwargs,
 ):
-    # TODO: edit docstring
     """
     Plot the time series. Add some features for convenience.
 
@@ -50,7 +50,7 @@ def plot_evolution_series(
     if xlabel is not None:
         ax.set_xlabel(xlabel)
     if ylabel is not None:
-        ax.set_ylabel(ylabel)
+        ax.set_ylabel(ylabel, fontsize="large")
     if title is not None:
         ax.set_title(title)
     ax.plot(x, y, *args, **kwargs)
@@ -93,6 +93,7 @@ def plot_2d_raster(
         lat,
         U,
         transform=ccrs.PlateCarree(),
+        rasterized=True,
         **kwargs,
     )
     if title is not None:
@@ -107,15 +108,17 @@ class SingleEMPlot:
     Plot a single eigen microstate (V and U in left and right panel).
     """
 
-    def __init__(self, fig=None, width_ratios=[0.9, 1], projection=None):
+    def __init__(
+        self, fig=None, width_ratios=[1, 0.7], uvspacing=0.05, projection=None
+    ):
         if fig is None:
             fig = plt.gcf()
 
-        gs = fig.add_gridspec(1, 2, width_ratios=width_ratios)
-        ax_v = fig.add_subplot(gs[0])
+        gs = fig.add_gridspec(1, 2, width_ratios=width_ratios, wspace=uvspacing)
         if projection is None:
             projection = ccrs.Robinson(central_longitude=180)
-        ax_u = fig.add_subplot(gs[1], projection=projection)
+        ax_u = fig.add_subplot(gs[0], projection=projection)
+        ax_v = fig.add_subplot(gs[1])
 
         self.fig = fig
         self.ax_v = ax_v
@@ -140,10 +143,10 @@ class SingleEMPlot:
         ax_u = self.ax_u
 
         ax_v.plot(time, V)
-        ax_v.axhline(0, color="black", linestyle="--")
+        ax_v.axhline(0, color="black", linestyle="--", linewidth=0.5)
         ax_v.invert_xaxis()
         ax_v.set_xlabel("Age (yr BP)")
-        ax_v.set_ylabel(ylabel_fmt.format(em_idx))
+        ax_v.set_ylabel(ylabel_fmt.format(em_idx), labelpad=0)
         ax_v.set_title(vtitle_fmt.format(em_idx), fontsize="large")
 
         plot_2d_raster(U, lon, lat, ax=ax_u, title=utitle_fmt.format(em_idx))
@@ -157,7 +160,7 @@ class MultiEMPlot:
     def __init__(self, n_top: int, fig=None):
         if fig is None:
             fig = plt.gcf()
-        subfigures = fig.subfigures(n_top, 1, hspace=0.005)
+        subfigures = fig.subfigures(n_top, 1, hspace=0.0)
 
         self.fig = fig
         self.subfigures = subfigures
@@ -166,6 +169,8 @@ class MultiEMPlot:
     def plot(
         self,
         em: EMG,
+        uvwidthratios=[1, 0.7],
+        uvspacing=0.05,
         title: str = None,
         ylabel_fmt=r"$V_{}$",
         vtitle_fmt=r"Evolution $V_{}$",
@@ -179,9 +184,13 @@ class MultiEMPlot:
             Including ``ylabel_fmt``, ``vtitle_fmt``, ``utitle_fmt``.
         """
         self.fig.suptitle(title, fontsize="x-large", fontweight="bold")
+
         for i in range(self.n_top):
-            fig = self.subfigures[i]
-            em_plot = SingleEMPlot(fig)
+            if self.n_top == 1:
+                fig = self.subfigures
+            else:
+                fig = self.subfigures[i]
+            em_plot = SingleEMPlot(fig, uvwidthratios, uvspacing)
             em_plot.plot(
                 em.evolution_[i],
                 em.microstates_[i],
@@ -204,7 +213,7 @@ class MultiVarEMPlot:
     def __init__(self, n_var: int, fig=None):
         if fig is None:
             fig = plt.gcf()
-        subfigures = fig.subfigures(1, n_var, wspace=0.04)
+        subfigures = fig.subfigures(1, n_var)
         self.fig = fig
         self.subfigures = subfigures
         self.n_var = n_var
@@ -213,28 +222,37 @@ class MultiVarEMPlot:
         self,
         data_dict: dict[str, EMG],
         n_top: int,
+        uvwidthratios=[1, 0.7],
+        uvspacing=0.05,
         title_fmt="EM of {}",
         ylabel_fmt=r"$V_{}$",
         vtitle_fmt=r"Evolution $V_{}$",
         utitle_fmt=r"Microstate $U_{}$",
     ):
-        """
-        Parameters
-        ----------
-        **kwargs
-            Keyword arguments passed to ``MultiEMPlot.plot``,
-            Including ``ylabel_fmt``, ``vtitle_fmt``, ``utitle_fmt``.
-        """
         for i, (varname, em) in enumerate(data_dict.items()):
             fig = self.subfigures[i]
             em_plot = MultiEMPlot(n_top, fig)
             em_plot.plot(
-                em, title_fmt.format(varname), ylabel_fmt, vtitle_fmt, utitle_fmt
+                em,
+                uvwidthratios,
+                uvspacing,
+                title_fmt.format(varname),
+                ylabel_fmt,
+                vtitle_fmt,
+                utitle_fmt,
             )
 
 
 class ProxyTrendsMap:
-    def __init__(self, fig=None, mesh_ax=None, ax_crs=None, data_crs=None):
+    def __init__(
+        self,
+        fig=None,
+        mesh_ax=None,
+        ax_crs=None,
+        data_crs=None,
+        cmap=None,
+        cbar_ax=None,
+    ):
         if fig is None:
             fig = plt.gcf()
         self.fig = fig
@@ -243,38 +261,53 @@ class ProxyTrendsMap:
         self.mesh_ax = mesh_ax
 
         if ax_crs is None:
-            ax_crs = ccrs.Robinson(central_longitude=180)
+            ax_crs = mesh_ax.projection
         if data_crs is None:
             data_crs = ccrs.PlateCarree()
 
-        position = mesh_ax.get_position()
-        ax = fig.add_axes(
-            [position.x0, position.y0, position.width, position.height],
-            projection=ax_crs,
-            frameon=False,
-        )
-        ax.patch.set_alpha(0)
+        if cmap is None:
+            cmap = sns.diverging_palette(145, 300, s=60, as_cmap=True)
+        self.cmap = cmap
+        self.cbar_ax = cbar_ax
 
-        self.ax = ax
         self.ax_crs = ax_crs
         self.data_crs = data_crs
 
     def plot(
         self,
         proxy_trends: list[data_utils.ProxyTrends],
-        trend_color={1: "violet", -1: "lightgreen", 0: "yellow"},
         explode=4000,
         radius=60000,
         **kwargs,
     ):
-        ax = self.ax
+        all_trends = []
+        for item in proxy_trends:
+            all_trends.extend(item.trends)
+        max_kendall_tau = max(np.abs(all_trends))
+        norm = mpl.colors.Normalize(vmin=-max_kendall_tau, vmax=max_kendall_tau)
+        cbar = self.fig.colorbar(
+            mpl.cm.ScalarMappable(norm=norm, cmap=self.cmap),
+            cax=self.cbar_ax,
+        )
+
+        cbar.outline.set_visible(False)
+        cbar.set_label(r"Kendall's $\tau$", fontsize="x-large")
+
+        position = self.mesh_ax.get_position()
+        ax = self.fig.add_axes(
+            [position.x0, position.y0, position.width, position.height],
+            projection=self.ax_crs,
+            frameon=False,
+        )
+        ax.patch.set_alpha(0)
 
         for item in proxy_trends:
             lat, lon = item.lat, item.lon
             trends = item.trends
             ax.pie(
                 [1 for _ in trends],
-                colors=[trend_color[t] for t in trends],
+                # colors=[trend_color[t] for t in trends],
+                colors=self.cmap(norm(trends)),
                 startangle=90,
                 explode=[explode for _ in trends],
                 radius=radius,
@@ -321,7 +354,7 @@ def plot_proxy_series_and_location(
     site_data = site["data"]
     age = site_data["age_median"][...]
 
-    fig = plt.figure(figsize=(4 * 2, 4 * n), constrained_layout=True)
+    fig = plt.figure(figsize=(4 * 2, 4 * n))
     gs = fig.add_gridspec(n, 2, width_ratios=[1, 1])
 
     geoaxe = fig.add_subplot(gs[0, 1], projection=ccrs.PlateCarree())
@@ -333,6 +366,7 @@ def plot_proxy_series_and_location(
 
         ax = fig.add_subplot(gs[i, 0])
         ax.set_xlim(lower_boundary, upper_boundary)
+        ax.set_prop_cycle("color", sns.color_palette("colorblind"))
         scatter_proxy_series(
             age[(age >= lower_boundary) & (age <= upper_boundary)],
             v,
@@ -368,7 +402,9 @@ def scatter_proxy_series(
         xlabel,
         ylabel,
         proxy_name,
-        "o",
+        marker="o",
+        markersize=4,
+        linestyle="",
         **kwargs,
     )
 

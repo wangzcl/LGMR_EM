@@ -12,7 +12,8 @@ dependencies = [
     "matplotlib=3.8.2",
     "eofs=1.4.0",
     "h5netcdf=1.3.0",
-    "netCDF4==1.6.5",
+    "netCDF4=1.6.5",
+    "seaborn=0.13.2",
 ]
 
 [project.optional-dependencies]

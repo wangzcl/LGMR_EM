@@ -7,7 +7,12 @@ scripts/debug*.py
 
 data/**/*.*
 !data/**/*.md
-images/ensembles/*
+!data/Orbital/*.*
+images/*
+!images/*.md
 archive/
 
 *.pdf
+*.ai
+*.png
+*.npy
