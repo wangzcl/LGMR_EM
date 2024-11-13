@@ -387,12 +387,40 @@ def scatter_proxy_series(
     **kwargs,
 ):
     ylabel_dict = {
-        "d18o": r"$\delta^{18}$O (‰)",
+        "d18o": r"$\delta^{18}$O (‰ PDB)",
         "mgca": "Mg/Ca (mmol/mol)",
         "uk37": r"U$^k_{37}$",
         "tex86": r"TEX$_{86}$",
     }
-    ylabel = ylabel_dict[proxy_name.split("_")[0]]
+
+    title0_dict = {
+        "d18o": r"$\delta^{18}$O",
+        "mgca": r"Mg/Ca",
+        "uk37": r"U$^k_{37}$",
+        "tex86": r"TEX$_{86}$",
+    }
+
+    species_dict = {
+        "ruber": r"$_{G. ruber}$",
+        "sacculifer": r"$_{G. sacculifer}$",
+        "inflata": r"$_{G. inflata}$",
+        "tumida": r"$_{G. tumida}$",
+        "bulloides": r"$_{G. bulloides}$",
+        "peregrina": r"$_{G. peregrina}$",
+        "ruber_pink": r"$_{G. ruber\text{ (pink)}}$",
+        "dutertrei": r"$_{N. dutertrei}$",
+        "pachyderma": r"$_{N. pachyderma}$",
+        "pachyderma_d": r"$_{N. pachyderma\text{ (d)}}$",
+        "obliquiloculata": r"$_{P. obliquiloculata}$",
+    }
+    #print(proxy_name)
+    proxy_name_split = proxy_name.split("_", maxsplit=1)
+    proxy_class = proxy_name_split[0]
+    ylabel = ylabel_dict[proxy_class]
+    if proxy_class == "d18o" or proxy_class == "mgca":
+        title = title0_dict[proxy_class] + species_dict[proxy_name_split[1]]
+    else:
+        title = title0_dict[proxy_class]
     return plot_evolution_series(
         x,
         y,
@@ -401,7 +429,7 @@ def scatter_proxy_series(
         data_utils.proxy_temp_correlation(proxy_name) == -1,
         xlabel,
         ylabel,
-        proxy_name,
+        title,
         marker="o",
         markersize=4,
         linestyle="",
@@ -430,5 +458,6 @@ def plot_site_location(site_name, lon, lat, ax=None):
         xytext=(0, 10),
         textcoords="offset points",
         horizontalalignment="center",
+        color="r",
     )
     return ax
