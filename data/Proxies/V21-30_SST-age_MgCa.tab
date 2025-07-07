@@ -1,0 +1,48 @@
+/* DATA DESCRIPTION:
+Citation:	Leduc, Guillaume; Schneider, Ralph R; Kim, Jung-Hyun; Lohmann, Gerrit (2010): Sea surface temperature reconstruction from sediment core V21-30 using Mg/Ca-ratios [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.737012, 
+	In supplement to: Leduc, G et al. (2010): Holocene and Eemian Sea surface temperature trends as revealed by alkenone and Mg/Ca paleothermometry. Quaternary Science Reviews, 29(7-8), 989-1004, https://doi.org/10.1016/j.quascirev.2010.01.004
+Coverage:	LATITUDE: -1.217000 * LONGITUDE: -89.680000
+	DATE/TIME START: 1965-03-18T00:00:00 * DATE/TIME END: 1965-03-18T00:00:00
+	MINIMUM ELEVATION: -617.0 m * MAXIMUM ELEVATION: -617.0 m
+Event(s):	V21-30 * LATITUDE: -1.217000 * LONGITUDE: -89.680000 * DATE/TIME: 1965-03-18T00:00:00 * ELEVATION: -617.0 m * Recovery: 12.02 m * CAMPAIGN: V21 * BASIS: Vema (URI: https://en.wikipedia.org/wiki/SV_Mandalay) * METHOD/DEVICE: Piston corer (PC)
+Parameter(s):	AGE [ka BP] (Age) * GEOCODE
+	Sea surface temperature [°C] (SST) * PI: References, proxy Mg/Ca (hdl:10013/epic.35231.d001) * METHOD/DEVICE: SST from Mg/Ca ratios
+License:	Creative Commons Attribution 3.0 Unported (CC-BY-3.0) (URI: https://creativecommons.org/licenses/by/3.0/)
+Size:	35 data points
+*/
+Age [ka BP]	SST [°C]
+1.660	22.44
+1.660	22.40
+1.660	22.36
+2.435	21.47
+2.435	21.63
+2.822	22.20
+3.209	21.94
+3.209	21.76
+3.674	22.09
+3.984	22.11
+3.984	22.50
+4.371	21.97
+4.758	21.48
+4.758	21.78
+5.145	21.64
+5.533	21.67
+5.533	21.24
+5.920	21.55
+6.282	21.26
+6.282	21.41
+6.643	21.23
+7.438	21.50
+7.728	21.34
+7.728	21.45
+8.089	21.39
+8.451	21.09
+8.451	21.27
+8.957	21.61
+9.174	21.79
+9.174	21.66
+9.572	21.83
+9.572	21.59
+9.897	21.70
+10.331	22.04
+10.331	21.97

@@ -1,0 +1,45 @@
+/* DATA DESCRIPTION:
+Citation:	Leduc, Guillaume; Schneider, Ralph R; Kim, Jung-Hyun; Lohmann, Gerrit (2010): Sea surface temperature reconstruction from sediment core BS79-38 using alkenones [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.737206, 
+	In supplement to: Leduc, G et al. (2010): Holocene and Eemian Sea surface temperature trends as revealed by alkenone and Mg/Ca paleothermometry. Quaternary Science Reviews, 29(7-8), 989-1004, https://doi.org/10.1016/j.quascirev.2010.01.004
+Coverage:	LATITUDE: 38.412000 * LONGITUDE: 13.577000
+	MINIMUM ELEVATION: -1489.0 m * MAXIMUM ELEVATION: -1489.0 m
+Event(s):	BS79-38 * LATITUDE: 38.412000 * LONGITUDE: 13.577000 * ELEVATION: -1489.0 m * METHOD/DEVICE: Gravity corer (GC)
+Parameter(s):	AGE [ka BP] (Age) * GEOCODE
+	Sea surface temperature [°C] (SST) * PI: References, proxy alkenones (hdl:10013/epic.35232.d001) * METHOD/DEVICE: SST calculated from alkenones
+License:	Creative Commons Attribution 3.0 Unported (CC-BY-3.0) (URI: https://creativecommons.org/licenses/by/3.0/)
+Size:	33 data points
+*/
+Age [ka BP]	SST [°C]
+0.867	16.9
+1.127	15.1
+1.647	15.1
+1.906	16.2
+2.166	16.8
+2.426	17.6
+2.946	16.5
+3.206	17.0
+3.465	18.6
+3.985	17.8
+4.201	18.1
+4.417	18.2
+4.849	18.3
+5.281	18.3
+5.669	16.8
+5.928	15.4
+6.144	16.0
+6.576	18.9
+6.792	18.2
+7.008	18.6
+7.440	18.3
+7.721	19.1
+7.819	19.2
+8.146	18.5
+8.309	18.8
+8.472	20.5
+8.799	19.7
+8.962	18.3
+9.125	18.7
+9.452	16.2
+9.615	19.0
+9.871	16.8
+10.382	18.8

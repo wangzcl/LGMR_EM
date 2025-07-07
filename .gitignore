@@ -8,6 +8,7 @@ scripts/debug*.py
 data/**/*.*
 !data/**/*.md
 !data/Orbital/*.*
+!data/Proxies/*.*
 images/*
 !images/*.md
 archive/

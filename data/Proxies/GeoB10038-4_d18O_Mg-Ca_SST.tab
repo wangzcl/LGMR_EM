@@ -1,0 +1,83 @@
+/* DATA DESCRIPTION:
+Citation:	Mohtadi, Mahyar; Steinke, Stephan; Lückge, Andreas; Groeneveld, Jeroen; Hathorne, Ed C (2010): Isotopic compositions, Mg/Ca ratios and sea surface temperatures of sediment core GeoB10038-4 [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.736648, 
+	In supplement to: Mohtadi, M et al. (2010): Glacial to Holocene surface hydrography of the tropical eastern Indian Ocean. Earth and Planetary Science Letters, 292(1-2), 89-97, https://doi.org/10.1016/j.epsl.2010.01.024
+Project(s):	Center for Marine Environmental Sciences (MARUM) (URI: https://www.marum.de/en/)
+Coverage:	LATITUDE: -5.937500 * LONGITUDE: 103.246000
+	DATE/TIME START: 2005-08-17T04:53:00 * DATE/TIME END: 2005-08-17T04:53:00
+	MINIMUM DEPTH, sediment/rock: 0.00 m * MAXIMUM DEPTH, sediment/rock: 3.12 m
+Event(s):	GeoB10038-4 * LATITUDE: -5.937500 * LONGITUDE: 103.246000 * DATE/TIME: 2005-08-17T04:53:00 * ELEVATION: -1891.0 m * CAMPAIGN: SO184/1 (PABESIA) (URI: urn:nbn:de:gbv:46-ep000100431) * BASIS: Sonne (URI: https://en.wikipedia.org/wiki/RV_Sonne) * METHOD/DEVICE: Gravity corer (Kiel type) (SL)
+Parameter(s):	DEPTH, sediment/rock [m] (Depth sed) * GEOCODE
+	AGE [ka BP] (Age) * GEOCODE
+	Cibicidoides wuellerstorfi, δ18O [‰ PDB] (C. wuellerstorfi δ18O) * PI: Mohtadi, Mahyar (https://orcid.org/0000-0003-3306-0969, mmohtadi@marum.de) * METHOD/DEVICE: Mass spectrometer Finnigan MAT 251
+	Globigerinoides ruber, δ18O [‰ PDB] (G. ruber δ18O) * PI: Mohtadi, Mahyar (https://orcid.org/0000-0003-3306-0969, mmohtadi@marum.de) * METHOD/DEVICE: Mass spectrometer Finnigan MAT 251 * COMMENT: Globigerinoides ruber sensu stricto
+	Magnesium/Calcium ratio (Mg/Ca) * PI: Mohtadi, Mahyar (https://orcid.org/0000-0003-3306-0969, mmohtadi@marum.de) * METHOD/DEVICE: ICP-OES, Perkin-Elmer, Optima 3300R * COMMENT: mmol/mol, Globigerinoides ruber sensu stricto
+	Sea surface temperature, annual mean [°C] (SST (1-12)) * PI: Mohtadi, Mahyar (https://orcid.org/0000-0003-3306-0969, mmohtadi@marum.de) * METHOD/DEVICE: Calculated, see reference(s) * COMMENT: Anand et al. (2003)
+	δ18O, water [‰ SMOW] (δ18O H2O) * PI: Mohtadi, Mahyar (https://orcid.org/0000-0003-3306-0969, mmohtadi@marum.de) * METHOD/DEVICE: Calculated, see reference(s) * COMMENT: Bemis et al. (1998)/Waelbroeck et al. (2003)
+License:	Creative Commons Attribution 3.0 Unported (CC-BY-3.0) (URI: https://creativecommons.org/licenses/by/3.0/)
+Size:	311 data points
+*/
+Depth sed [m]	Age [ka BP]	C. wuellerstorfi δ18O [‰ PDB]	G. ruber δ18O [‰ PDB]	Mg/Ca	SST (1-12) [°C]	δ18O H2O [‰ SMOW]
+0.00	0.00		-3.07	4.78	27.84	-0.10
+0.03	0.44	2.32	-2.64	4.34	26.76	0.10
+0.08	0.91	2.80	-2.88	4.35	26.79	-0.13
+0.13	1.38	1.54	-2.35	4.53	27.26	0.49
+0.18	1.86	1.89	-2.65	4.39	26.89	0.11
+0.23	2.33	2.46	-2.82	4.33	26.76	-0.08
+0.28	2.80	2.51	-2.74	4.07	26.07	-0.15
+0.33	3.27	2.61	-2.67	4.17	26.32	-0.03
+0.38	3.75	2.06	-2.65	4.05	26.00	-0.08
+0.43	4.22	2.09	-2.61	4.28	26.61	0.09
+0.48	4.69	2.44	-2.35	3.84	25.40	0.09
+0.53	5.16	2.58	-2.53	4.22	26.46	0.12
+0.58	5.64	1.84	-2.53			
+0.63	6.11	2.54	-2.75	4.06	26.02	-0.20
+0.68	6.58	2.29	-2.34	3.99	25.84	0.17
+0.73	7.05	2.66	-2.37	3.91	25.61	0.08
+0.78	7.53	2.66	-2.25	3.90	25.58	0.18
+0.83	8.00	2.43	-2.40	4.25	26.54	0.22
+0.88	8.47	2.71	-2.64	4.02	25.92	-0.19
+0.93	9.08	2.72	-2.37	3.96	25.76	-0.01
+0.98	9.70	2.54	-2.32	3.84	25.40	-0.09
+1.03	10.31	2.70	-2.10	4.03	25.95	0.17
+1.08	10.93	2.19	-1.65	3.91	25.61	0.48
+1.13	11.54	2.80	-1.83	3.93	25.68	0.24
+1.18	12.16	2.77	-1.53	4.16	26.30	0.60
+1.23	12.77	3.10	-1.28	3.96	25.75	0.66
+1.28	13.39	2.89	-1.79	3.85	25.45	0.01
+1.33	14.00	3.42				
+1.38	14.62	3.43	-1.27	3.72	25.06	0.31
+1.43	15.23	3.47	-0.83	3.90	25.57	0.80
+1.48	15.82	3.44	-1.06	3.84	25.42	0.50
+1.53	16.42	3.32	-0.86	3.85	25.43	0.67
+1.58	17.01	3.92	-0.95	3.67	24.92	0.44
+1.63	17.61	3.62	-0.78	3.84	25.41	0.70
+1.68	18.20	3.72	-0.87	3.64	24.82	0.46
+1.73	18.79	3.91	-0.47	3.48	24.32	0.74
+1.78	19.39	4.05	-0.95	3.31	23.77	0.14
+1.83	19.98	3.94	-0.73	3.41	24.10	0.42
+1.88	20.58	4.09	-0.75	3.83	25.39	0.67
+1.93	21.17	3.85	-0.34	3.91	25.61	1.14
+1.98	21.94	3.98	-0.71	3.74	25.11	0.67
+2.03	22.72	3.85	-1.03	3.47	24.27	0.18
+2.08	23.49	3.98	-0.65	3.56	24.56	0.64
+2.13	24.26	3.49	-0.84	3.67	24.92	0.55
+2.17	24.88	4.01	-1.11	3.42	24.13	0.13
+2.22	25.65	3.76	-0.62	3.45	24.21	0.67
+2.27	26.43	4.10	-0.83	3.62	24.76	0.61
+2.32	27.20	4.00	-0.73	3.30	23.73	0.52
+2.37	27.87	3.72	-0.74	3.74	25.13	0.84
+2.42	28.54	4.01	-1.15	3.93	25.66	0.58
+2.47	29.21	3.79	-1.04	3.68	24.94	0.58
+2.52	29.88	3.45	-0.57	3.40	24.05	0.89
+2.57	30.54	3.57	-1.15	3.35	23.90	0.31
+2.62	31.21	3.68	-0.87	3.24	23.53	0.52
+2.67	31.88	3.78	-0.95	3.83	25.39	0.84
+2.72	32.55	3.46	-0.70	3.47	24.29	0.86
+2.77	33.43	3.89	-0.89	3.60	24.68	0.75
+2.82	34.31	3.69	-1.16	3.51	24.42	0.42
+2.87	35.19	3.63	-1.36	3.92	25.64	0.47
+2.92	36.07		-0.89	3.70	25.01	0.82
+2.97	36.95	3.66	-1.15	3.64	24.81	0.56
+3.02	37.83	3.53	-1.34	3.68	24.95	0.45
+3.07	38.71	3.54	-1.13	3.52	24.46	0.58
+3.12	39.59	3.41	-1.14	3.66	24.89	0.68
