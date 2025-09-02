@@ -513,6 +513,6 @@ for i in range(n_records):
 # fig.subplots_adjust(hspace=-0.1)
 
 axes[0].set_xlim(9500, 0)
-axes[-1].set_xlabel("Age (years BP)")
+axes[-1].set_xlabel("Age (yr BP)")
 
 fig.savefig("images/other_proxies.pdf", dpi=300)
