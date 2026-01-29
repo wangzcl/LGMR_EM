@@ -4,6 +4,7 @@ Utilities for plotting.
 import numpy as np
 from numpy.typing import ArrayLike
 from h5netcdf import File
+import pandas as pd
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib as mpl
@@ -275,15 +276,16 @@ class ProxyTrendsMap:
 
     def plot(
         self,
-        proxy_trends: list[data_utils.ProxyTrends],
+        trends_df: pd.DataFrame,
+        sites_df: pd.DataFrame,
+        hatch_pattern_map: dict[str, str]=None,
         explode=4000,
         radius=60000,
+        significant_color="yellow",
         **kwargs,
     ):
-        all_trends = []
-        for item in proxy_trends:
-            all_trends.extend(item.trends)
-        max_kendall_tau = max(np.abs(all_trends))
+        # set colorbar
+        max_kendall_tau = trends_df["tau"].abs().max()
         norm = mpl.colors.Normalize(vmin=-max_kendall_tau, vmax=max_kendall_tau)
         cbar = self.fig.colorbar(
             mpl.cm.ScalarMappable(norm=norm, cmap=self.cmap),
@@ -301,10 +303,25 @@ class ProxyTrendsMap:
         )
         ax.patch.set_alpha(0)
 
-        for item in proxy_trends:
-            lat, lon = item.lat, item.lon
-            trends = item.trends
-            ax.pie(
+        trends_groupby_sites = trends_df.groupby("site")
+
+        for site, group in trends_groupby_sites:
+            lat, lon = sites_df.loc[sites_df["site"] == site].iloc[0][["lat", "lon"]]
+
+            proxy_names = group["proxy"].values
+
+            if hatch_pattern_map is None:
+                hatch_patterns=None
+            else:
+                hatch_patterns = [
+                    hatch_pattern_map.get(proxy_name.split("_", maxsplit=1)[0], "")
+                    for proxy_name in proxy_names
+                ]
+
+            trends = group["tau"].values
+            significances = group["significant"].values
+
+            wedges, _ = ax.pie(
                 [1 for _ in trends],
                 # colors=[trend_color[t] for t in trends],
                 colors=self.cmap(norm(trends)),
@@ -312,8 +329,16 @@ class ProxyTrendsMap:
                 explode=[explode for _ in trends],
                 radius=radius,
                 center=self.ax_crs.transform_point(lon, lat, self.data_crs),
+                hatch=hatch_patterns,
                 **kwargs,
             )
+            if hatch_patterns is not None:
+                for wedge, significant in zip(wedges, significances):
+                    if significant:
+                        wedge.set_edgecolor(significant_color)
+                        wedge.set_linewidth(0)
+                    else:
+                        wedge.set_edgecolor("none")
 
         ax.set_global()
         return

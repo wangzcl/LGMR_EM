@@ -22,5 +22,6 @@ LGMR/
     ├── LGMR_SST_ens_451-500.nc
     ├── LGMR_d18Op_climo.nc
     ├── README.md
+    ├── TEMP_pop_50yrDecMon_iCESM_LGMtoPresent.nc
     └── proxyDatabase.nc
 ```

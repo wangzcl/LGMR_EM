@@ -2,14 +2,14 @@
 Ultilities for reading and processing LGMR data
 """
 
-from typing import Literal
+from typing import Literal, Tuple
 import numpy as np
 from numpy.typing import ArrayLike
 import xarray as xr
+import pandas as pd
 import h5netcdf
 from dataclasses import dataclass
 from scipy.stats import kendalltau
-from collections import namedtuple
 
 LGMR_VAR_KEYS = {"SST": "sst", "SAT": "sat", "d18Op": "d18Op"}
 LGMR_PHASES = ("glacial", "deglacial", "interglacial")
@@ -220,6 +220,7 @@ def ascend_or_descend(
 
     Returns:
     --------
+
     sign : -1, 0 or 1
         1 if ascending, -1 if descending, 0 if unknown.
     """
@@ -347,12 +348,9 @@ def is_high_quality_proxy(
     return True
 
 
-ProxyTrends = namedtuple("ProxyTrends", ["site", "lat", "lon", "trends"])
-
-
 def proxy_trends(
     filepath: str, timeslice: str = "interglacial"
-) -> list[ProxyTrends]:
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Load proxy database from a NetCDF file, and calculate Kendall tau
     temperature trends of proxy series.
@@ -367,12 +365,17 @@ def proxy_trends(
 
     Returns:
     --------
-    all_trends : list[ProxyTrends]
-        A list of ProxyTrends objects, each of which contains the site name,
-        latitude, longitude and kendall tau trends (reversely sorted) of a proxy record.
-        If a site "a" is locate at (30°N, 120°E), and has 3 series,
-        the corresponding ProxyTrends object is:
-        ProxyTrends(site="a", lat=30, lon=120, trends=(tau1, tau2, tau3))
+    all_trends : pd.DataFrame
+        DataFrame containing proxy trends. Columns are:
+        "site": site name,
+        "proxy": proxy name,
+        "tau": Kendall tau trend value (positive for warming, negative for cooling),
+        "significant": whether the trend is significant (p < 0.05).
+    all_sites : pd.DataFrame
+        DataFrame containing site information. Columns are:
+        "site": site name,
+        "lat": latitude,
+        "lon": longitude.
 
     """
     if timeslice == "interglacial":
@@ -383,12 +386,13 @@ def proxy_trends(
 
     proxydb = h5netcdf.File(filepath, "r", decode_vlen_strings=True)
     all_trends = []
+    all_sites = []
     for site_name, site in proxydb.items():
         lat, lon = site.attrs["latitude"], site.attrs["longitude"]
+        all_sites.append({"site": site_name, "lat": lat, "lon": lon})
         site_data = site["data"]
         age_raw = site_data["age_median"][...]
 
-        trends = []
         for var_name, value in site_data.items():
             if "age" in var_name or "depth" in var_name:
                 continue
@@ -402,13 +406,23 @@ def proxy_trends(
             ):
                 continue
             #trend = ascend_or_descend(age, data, p_thres)
-            trend = -kendalltau(age, data).statistic
-            trend *= proxy_temp_correlation(var_name)
-            trends.append(trend)
-
-        if trends:
-            trends.sort(reverse=True)
-            all_trends.append(ProxyTrends(site_name, lat, lon, tuple(trends)))
+            trend = kendalltau(age, data)
+            tau = trend.statistic
+            significant = (trend.pvalue < 0.05)
+            tau *= proxy_temp_correlation(var_name)
+            all_trends.append(
+                {
+                    "site": site_name,
+                    "proxy": var_name,
+                    "tau": tau,
+                    "significant": significant,
+                }
+            )
     proxydb.close()
 
-    return all_trends
+    all_trends = pd.DataFrame(all_trends)
+    all_sites = pd.DataFrame(all_sites)
+
+    all_trends.sort_values(by=["site", "tau"], ascending=[True, False], inplace=True)
+
+    return all_trends, all_sites
